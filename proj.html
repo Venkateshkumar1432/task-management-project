@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html ng-app="crudApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="proj.js"></script>
+    <link rel="stylesheet" href="proj.css">
+    <title>Project</title>
+</head>
+<body ng-controller="crudController">
+    <div class="hearder">
+        <h1><b>Task Table</b></h1>
+    </div>
+    <div class="forms">
+    <form ng-submit="addUser()">
+        Task Name :
+        <input type="text" ng-model="name" placeholder="Enter Task" required>
+        <br>
+        <br>
+        Description of Task :
+        <input type="text" ng-model="description" placeholder="Enter Description" required>
+        <br>
+        <br>
+        Start Date :
+        <input type="date" ng-model="startdate" required>
+        <br>
+        <br>
+        End Date :
+        <input type="date" ng-model="enddate" required>
+        <br>
+        <br>
+        Assign Task To:
+        <input type="text" ng-model="assign" placeholder="Assign to" required>
+        <br>
+        <br>
+        <button type="submit">Add User</button>
+    </form>
+    </div>
+    <br>
+    <table border="3">
+        <thead>
+            <tr>
+               <th>Task Name</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Assign to</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in users">
+                <td>{{ user.name }}</td>
+                <td>{{ user.description }}</td>
+                <td>{{ user.startdate}}</td>
+                <td>{{ user.enddate}}</td>
+                <td>{{ user.assign }}</td>
+                <td>
+                    <button ng-click="editUser(user)">Edit</button>
+                    <button ng-click="deleteUser(user)">Delete</button>
+                </td>
+            </tr>
+       </tbody>
+    </table>
+    <script>
+        var app = angular.module('crudApp', []);
+        app.controller('crudController', function ($scope) {
+        $scope.users = [
+       
+        ];
+       $scope.addUser = function () {
+        $scope.users.push({ name: $scope.name, description: $scope.description, startdate:$scope.startdate,enddate:$scope.enddate,assign:$scope.assign,});
+        $scope.name = '';
+        $scope.age = '';
+        $scope.startdate = '';
+        $scope.enddate= '';
+        $scope.assign= '';
+       };
+       $scope.editUser = function (user) {
+        var index = $scope.users.indexOf(user);
+       // Prompt for updated values with validation
+       var updatedName = prompt('Enter updated name:', user.name);
+       var updateddescription = prompt('Enter updated Description:', user.description);
+       var updatedstartdate = prompt('Enter updated StartDate:', user.startdate);
+       var updatedenddate = prompt('Enter updated EndDate:', user.enddate);
+       var updatedassign = prompt('Enter updated Assign To:', user.assign);
+       // Check if the user pressed cancel
+       if (!(updatedName == null && updateddescription == null && updatedstartdate == null && updatedenddate == null && updatedassign == null) ){
+        // Update the user
+        var updatedUser = { name: updatedName, description: updateddescription, startdate: updatedstartdate, enddate: updatedenddate, assign: updatedassign,
+       };
+       $scope.users.splice(index,   1, updatedUser);
+       }
+       };
+       $scope.deleteUser = function (user) {
+        var index = $scope.users.indexOf(user);
+        $scope.users.splice(index, 1);
+       };
+       });
+       </script>
+        </body>
+       </html>
+</body>
+</html>
